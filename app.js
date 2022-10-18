@@ -27,6 +27,7 @@ app.use('/cards/:cardId', routerCard);
 app.use('/cards/:cardId/likes', routerCard);
 app.use('/cards/:cardId/likes', routerCard); 
 app.use('/users/me', router);
+app.use('/users/me/avatar', router);
 
 
 
