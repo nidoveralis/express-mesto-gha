@@ -29,6 +29,8 @@ app.use('/cards/:cardId/likes', routerCard);
 app.use('/users/me', router);
 app.use('/users/me/avatar', router);
 
+  //res.status(404).send({message: "Страница не найдена"})
+
 
 
 app.listen(3000, () => {
