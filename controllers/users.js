@@ -36,7 +36,7 @@ module.exports.getUserById = async (req, res) => {
 
 module.exports.editUser = async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { runValidators: true })
+    await User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true, runValidators: true })
     .then(user => res.send({ data: user }))
     }catch(err){
       if(err.name==="ValidationError"){
