@@ -20,22 +20,28 @@ module.exports.createUser = async (req, res) => {
 module.exports.getUserById = async (req, res) => {
   try {
     await User.findById(req.params.userId)
-    .then(user => res.send({ data: user }))
+    
+    .then(user => 
+      {
+        if(user===null) {
+          res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+        }else {
+          res.send({ data: user })
+        }
+      })
   } catch(err){
-    if(err.name==="CastError"){
-      res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
-    }
+    res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
   }
 };
 
 module.exports.editUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true })
     .then(user => res.send({ data: user }))
-    .catch(err => res.status(500).send({ message: err }));
+    .catch(err => res.send({ message: err }));
 };
 
 module.exports.editAvatar = (req,res) =>{
   User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true })
     .then(user => res.send({ data: user }))
-    .catch(err => res.status(500).send({ message: err }));
+    .catch(err => res.send({ message: err }));
 }
