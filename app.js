@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 const router = require('./routes/users.js');
 const routerCard = require('./routes/cards.js')
-const ErrorNotFound = require('./error.js')
 
 const { PORT = 3000 } = process.env;
 
