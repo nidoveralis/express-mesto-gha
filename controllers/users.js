@@ -6,21 +6,18 @@ module.exports.getUser = (req, res) => {
   .catch(err => res.send({message: err}))
 };
 
-module.exports.createUser = async (req, res) => {
-  try {
+module.exports.createUser = (req, res) => {
     const {name, about, avatar} = req.body
-    await User.create({name, about, avatar})
+     User.create({name, about, avatar})
     .then(user => res.send({ data: user }))
-  } catch(err){
+    .catch((err)=>{
       if(err.name==="ValidationError"){
         res.status(400).send({message: "Переданы некорректные данные при создании пользователя."})
       }
-}};
+})};
 
-module.exports.getUserById = async (req, res) => {
-  try {
-    await User.findById(req.params.userId)
-    
+module.exports.getUserById = (req, res) => {
+   User.findById(req.params.userId)
     .then(user => 
       {
         if(user===null) {
@@ -29,9 +26,9 @@ module.exports.getUserById = async (req, res) => {
           res.send({ data: user })
         }
       })
-  } catch(err){
+   .catch((err)=>{
     res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
-  }
+  })
 };
 
 module.exports.editUser = (req, res) => {
@@ -46,7 +43,7 @@ module.exports.editUser = (req, res) => {
 
 module.exports.editAvatar = async (req,res) =>{
  try { 
-  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })  
+  await User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })  
   .then(user => res.send({ data: user }))
   }catch(err){
     if(err.name==="ValidationError"){
