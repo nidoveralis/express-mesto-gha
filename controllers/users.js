@@ -34,14 +34,22 @@ module.exports.getUserById = async (req, res) => {
   }
 };
 
-module.exports.editUser = (req, res) => {
-  User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true, runValidators: true })
+module.exports.editUser = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true, runValidators: true })
     .then(user => res.send({ data: user }))
-    .catch(err => res.send({ message: err }));
-};
+    }catch(err){
+      if(err.name==="ValidationError"){
+        res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
+      }
+}};
 
-module.exports.editAvatar = (req,res) =>{
-  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true })
+module.exports.editAvatar = async (req,res) =>{
+ try { 
+  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })
     .then(user => res.send({ data: user }))
-    .catch(err => res.send({ message: err }));
-}
+  }catch(err){
+    if(err.name==="ValidationError"){
+      res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})
+    }
+}};
