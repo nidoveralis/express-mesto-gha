@@ -6,11 +6,26 @@ module.exports.getUser = (req, res) => {
   .catch(err => res.send({message: err}))
 };
 
-module.exports.createUser = (req, res) => {
-  const {name, about, avatar} = req.body
-  User.create({name, about, avatar})
-  .then(user => res.send({ data: user })) 
-  .catch(err => res.send({message: err}))
+module.exports.createUser = //async (req, res) => {
+  (req, res) => {
+  //try {
+    const {name, about, avatar} = req.body
+    //await
+     User.create({name, about, avatar})
+    .then(user => res.send({ data: user }))
+    .catch(err => {
+      if(err.name==="ValidationError"){
+        res.status(400).send({message: "Переданы некорректные данные при создании пользователя"})
+      }      
+    })
+  //} catch(err){
+    //res.send({
+      //"message": "Переданы некорректные данные при создании пользователя"
+    //})
+  //}
+  
+  //.then(user => res.send({ data: user })) 
+  //.catch(err => res.send({message: err}))
 };
 
 module.exports.getUserById = (req, res) => {
