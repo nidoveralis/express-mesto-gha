@@ -9,12 +9,12 @@ module.exports.getUser = (req, res) => {
 module.exports.createUser = (req, res) => {
   const {name, about, avatar} = req.body
   User.create({name, about, avatar})
-  .then(user => res.send({ data: user }))
+  .then(user => res.send({ data: user })) 
   .catch(err => res.send({message: err}))
 };
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.body._id)
+  User.findById(req.params.userId)
   .then(user => res.send({ data: user }))
   .catch(err => res.send({message: err}))
 };
