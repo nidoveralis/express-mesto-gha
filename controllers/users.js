@@ -39,18 +39,14 @@ module.exports.editUser = (req, res) => {
    User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then(user => res.send({ data: user }))
     .catch((err)=>{
-      if(err.name==="ValidationError"){
+      if(err.name === "ValidationError"){
         res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
       }}
 )};
 
 module.exports.editAvatar = async (req,res) =>{
  try { 
-  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })
-  //.orFail(() => {
-   // throw new myError('Переданы некорректные данные');
-  //}) 
-  
+  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })  
   .then(user => res.send({ data: user }))
   }catch(err){
     if(err.name==="ValidationError"){
