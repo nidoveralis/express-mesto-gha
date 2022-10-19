@@ -35,7 +35,7 @@ module.exports.getUserById = async (req, res) => {
 };
 
 module.exports.editUser = (req, res) => {
-  User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true })
+  User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about}, { new: true, runValidators: true })
     .then(user => res.send({ data: user }))
     .catch(err => res.send({ message: err }));
 };
