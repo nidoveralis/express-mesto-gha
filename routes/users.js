@@ -12,6 +12,5 @@ router.use((req, res, next) => {
 })
 router.patch('/me', editUser);
 router.patch('/me/avatar', editAvatar);
-///634d93600bf5a50268b62de3
 
 module.exports = router;
