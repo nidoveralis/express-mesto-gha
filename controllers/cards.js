@@ -6,18 +6,26 @@ module.exports.getCards = (req, res) => {
   .catch(err => res.send({message: err}))
 };
 
-module.exports.createCard = (req, res) => {
+module.exports.createCard = async (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
-  Card.create({ name, link, owner })
+  try {
+    await Card.create({ name, link, owner })
     .then(card => res.send({ data: card }))
-    .catch(err => res.send({message: err}))
+  } catch(err) {
+    if(err.name==="ValidationError"){
+      res.status(400).send({message: "Переданы некорректные данные при создании карточки."})
+    }
+  }
 };
 
-module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+module.exports.deleteCard = async (req, res) => {
+  try {
+    await Card.findByIdAndRemove(req.params.cardId)
     .then(card => res.send({ data: card }))
-    .catch(err => res.send({message: err}))
+  } catch(err){
+    res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+  }
 };
 
 module.exports.likeCard = (req, res) => {
