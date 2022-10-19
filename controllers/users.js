@@ -24,13 +24,13 @@ module.exports.getUserById = async (req, res) => {
     .then(user => 
       {
         if(user===null) {
-          res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+          res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
         }else {
           res.send({ data: user })
         }
       })
   } catch(err){
-    res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+    res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
   }
 };
 
