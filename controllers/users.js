@@ -6,32 +6,26 @@ module.exports.getUser = (req, res) => {
   .catch(err => res.send({message: err}))
 };
 
-module.exports.createUser = //async (req, res) => {
-  (req, res) => {
-  //try {
+module.exports.createUser = async (req, res) => {
+  try {
     const {name, about, avatar} = req.body
-    //await
-     User.create({name, about, avatar})
+    await User.create({name, about, avatar})
     .then(user => res.send({ data: user }))
-    .catch(err => {
+  } catch(err){
       if(err.name==="ValidationError"){
-        res.status(400).send({message: "Переданы некорректные данные при создании пользователя"})
-      }      
-    })
-  //} catch(err){
-    //res.send({
-      //"message": "Переданы некорректные данные при создании пользователя"
-    //})
-  //}
-  
-  //.then(user => res.send({ data: user })) 
-  //.catch(err => res.send({message: err}))
-};
+        res.status(400).send({message: "Переданы некорректные данные при создании пользователя."})
+      }
+}};
 
-module.exports.getUserById = (req, res) => {
-  User.findById(req.params.userId)
-  .then(user => res.send({ data: user }))
-  .catch(err => res.send({message: err}))
+module.exports.getUserById = async (req, res) => {
+  try {
+    await User.findById(req.params.userId)
+    .then(user => res.send({ data: user }))
+  } catch(err){
+    if(err.name==="CastError"){
+      res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+    }
+  }
 };
 
 module.exports.editUser = (req, res) => {
