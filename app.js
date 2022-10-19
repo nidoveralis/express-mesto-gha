@@ -33,7 +33,7 @@ app.use('/users/me', router);
 app.use('/users/me/avatar', router);
 
 app.use('*', (req, res, next) => {
-  next(new ErrorNotFound('Страница не найдена'));
+  next(new ErrorNotFound({ message: 'Страница не найдена' }));
 });
 
 
