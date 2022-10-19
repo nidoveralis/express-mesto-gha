@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 
 const router = require('./routes/users.js');
 const routerCard = require('./routes/cards.js')
+const ErrorNotFound = require('./error.js')
+
+const { PORT = 3000 } = process.env;
 
 const app = express();
 app.use(bodyParser.json()); // для собирания JSON-формата
@@ -29,10 +32,11 @@ app.use('/cards/:cardId/likes', routerCard);
 app.use('/users/me', router);
 app.use('/users/me/avatar', router);
 
-  //res.status(404).send({message: "Страница не найдена"})
+app.use('*', (req, res, next) => {
+  next(new ErrorNotFound('Страница не найдена'));
+});
 
 
-
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(`App listening on port 3000`);
 }); 

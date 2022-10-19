@@ -48,7 +48,7 @@ module.exports.editAvatar = async (req,res) =>{
  try { 
   User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })
   //.orFail(() => {
-   // throw new BadRequestError('Переданы некорректные данные');
+   // throw new myError('Переданы некорректные данные');
   //}) 
   
   .then(user => res.send({ data: user }))
