@@ -42,11 +42,10 @@ module.exports.editUser = (req, res) => {
 )};
 
 module.exports.editAvatar = async (req,res) =>{
- try { 
-  await User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })  
-  .then(user => res.send({ data: user }))
-  }catch(err){
-    if(err.name==="ValidationError"){
-      res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})
-    }
-}};
+  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar}, { new: true, runValidators: true })  
+    .then(user => res.send({ data: user }))
+    .catch((err)=>{
+      if(err.name==="ValidationError"){
+        res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})
+      }
+})};
