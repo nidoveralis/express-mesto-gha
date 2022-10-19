@@ -22,7 +22,13 @@ module.exports.createCard = async (req, res) => {
 module.exports.deleteCard = async (req, res) => {
   try {
     await Card.findByIdAndRemove(req.params.cardId)
-    .then(card => res.send({ data: card }))
+    .then(card => {
+      if(card===null) {
+        res.status(404).send({message: ` Карточка с указанным _id ${req.params.cardId} не найдена.`})
+      }else {
+        res.send({ data: card })
+      }
+    })
   } catch(err){
     res.status(400).send({message: `Карточка с указанным _id ${req.params.cardId} не найдена.`})
   }
@@ -36,7 +42,7 @@ module.exports.likeCard = async (req, res) => {
     .then(card => 
       {
         if(card===null) {
-          res.status(400).send({message: "Переданы некорректные данные для постановки лайка."})
+          res.status(404).send({message: "Переданы некорректные данные для постановки лайка."})
         }else {
           res.send({ data: card })
         }
@@ -54,7 +60,7 @@ module.exports.dislikeCard = async (req, res) => {
     .then(card => 
       {
         if(card===null) {
-          res.status(400).send({message: "Переданы некорректные данные для снятия лайка."})
+          res.status(404).send({message: "Переданы некорректные данные для снятия лайка."})
         }else {
           res.send({ data: card })
         }
@@ -63,3 +69,9 @@ module.exports.dislikeCard = async (req, res) => {
     res.status(400).send({message: `Передан несуществующий _id ${req.params.cardId} карточки.`})
   }
 };
+
+//Обработка неправильного пути
+//8. В ответе приходит JSON-объект
+  //✓  Код ответа равен 404
+  //9. Проверка возврата поля message
+ //10. Ответ содержит message длинной больше 1 символа
