@@ -44,7 +44,7 @@ module.exports.editUser = (req, res) => {
 module.exports.editAvatar = (req,res) =>{
   const {avatar} = req.body
   User.findByIdAndUpdate(req.user._id, {avatar}, { new: true, runValidators: true })  
-    .then(user => res.send( user))
+    .then(user => res.send({avatar: "user.avatar"}))
     .catch((err)=>{
       if(err.name==="ValidationError"){
         res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})
