@@ -24,9 +24,9 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', router);
-app.use('/users/:userId ', router);
-app.use('/users/me', router);
-app.use('/users/me/avatar', router); 
+//app.use('/users/:userId ', router);
+//app.use('/users/me', router);
+//app.use('/users/me/avatar', router); 
 app.use('/cards', routerCard);
 app.use('/cards/:cardId', routerCard);
 app.use('/cards/:cardId/likes', routerCard);
