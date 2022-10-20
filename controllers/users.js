@@ -39,12 +39,12 @@ module.exports.editUser = (req, res) => {
       if(err.name === "ValidationError"){
         res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
       }}
-)};
+)}; 
 
 module.exports.editAvatar = (req,res) =>{
   const {avatar} = req.body
   User.findByIdAndUpdate(req.user._id, {avatar}, { new: true, runValidators: true })  
-    .then(user => res.send({ data: user }))
+    .then(user => res.send({ data: "kkk" }))
     .catch((err)=>{
       if(err.name==="ValidationError"){
         res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})

@@ -10,7 +10,7 @@ router.use((req, res, next) => {
   };
   next();
 })
-router.patch('/me', editUser);
+router.patch('/me', editUser); 
 router.patch('/me/avatar', editAvatar);
 
 module.exports = router;
