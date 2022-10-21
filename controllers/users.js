@@ -1,9 +1,11 @@
 const User = require('../models/user.js');
+const {ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND} = require('../constants');
+
 
 module.exports.getUser = (req, res) => {
   User.find({})
   .then(user => res.send({ data: user }))
-  .catch(err => res.send({message: err}))
+  .catch(err => res.status(ERROR_CODE_DEFAYLT).send({message: "Произошла ошибка"}));
 };
 
 module.exports.createUser = (req, res) => {
@@ -12,7 +14,10 @@ module.exports.createUser = (req, res) => {
     .then(user => res.send({ data: user }))
     .catch((err)=>{
       if(err.name==="ValidationError"){
-        res.status(400).send({message: "Переданы некорректные данные при создании пользователя."})
+        res.status(ERROR_CODE_INCORRECT_DATA).send({message: "Переданы некорректные данные."})
+      }else {
+        res.status(ERROR_CODE_DEFAYLT).send({message: "Произошла ошибка."})
+
       }
 })};
 
@@ -21,34 +26,41 @@ module.exports.getUserById = (req, res) => {
     .then(user => 
       {
         if(user===null) {
-          res.status(404).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+          res.status(ERROR_CODE_NOT_FOUND).send({message: `Пользователь не найден.`})
         }else {
           res.send({ data: user })
         }
       })
    .catch((err)=>{
-    res.status(400).send({message: `Пользователь по указанному _id ${req.params.userId} не найден.`})
+    if (err.name === 'CastError') {
+      res.status(ERROR_CODE_INCORRECT_DATA).send({ message: "Некорректный id" });
+    } else {
+      res.status(ERROR_CODE_DEFAYLT).send({ message: "Произошла ошибка" });
+    }
   })
 };
 
 module.exports.editUser = (req, res) => {
   const {name, about} = req.body
-  User.findByIdAndUpdate(req.user._id, { ...req.body }, { runValidators: true, new: true })
+  User.findByIdAndUpdate(req.user._id, {name, about}, { runValidators: true, new: true })
    .then(user => res.send({ data: user }))
     .catch((err)=>{
       if(err.name === "ValidationError"){
-        res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
+        res.status(ERROR_CODE_INCORRECT_DATA).send({message: "Переданы некорректные данные при обновлении профиля."})
+      }else {
+        res.status(ERROR_CODE_DEFAYLT).send({ message: "Произошла ошибка" });
       }}
 )}; 
 
 module.exports.editAvatar = (req,res) =>{
   const {avatar} = req.body
-  User.findByIdAndUpdate(req.user._id, { ...req.body }, { new: true, runValidators: true }) 
+  User.findByIdAndUpdate(req.user._id, {avatar}, { new: true, runValidators: true }) 
     .then(user => res.send({ data: user} ))
     .catch((err)=>{
       if(err.name==="ValidationError"){
-        res.status(400).send({message: "Переданы некорректные данные при обновлении аватара."})
+        res.status(ERROR_CODE_INCORRECT_DATA).send({message: "Переданы некорректные данные при обновлении аватара."})
+      }else {
+        res.status(ERROR_CODE_DEFAYLT).send({ message: "Произошла ошибка" });
       }
 })
-}
-//User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+};
