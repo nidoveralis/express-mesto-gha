@@ -19,10 +19,13 @@
   },
   "homepage": "https://github.com/nidoveralis/express-mesto-gha#readme",
   "devDependencies": {
+    "bcryptjs": "^2.4.3",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "nodemon": "^2.0.20"
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.20",
+    "validator": "^13.7.0"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
