@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const router = require('./routes/users');
 const routerCard = require('./routes/cards');
+const { createUser, login } = require('./controllers/users');
+const auth = require('./middlewares/auth')
 
 const { PORT = 3000 } = process.env;
 
@@ -13,13 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '634d93600bf5a50268b62de3',
-  };
+app.use('/singin', login);
+app.use('/singup', createUser);
 
-  next();
-});
+app.use(auth)
 
 app.use('/users', router);
 
