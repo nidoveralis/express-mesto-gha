@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND } = require('../constants');
 
 module.exports.getUser = (req, res) => {
@@ -8,8 +10,9 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const { name, about, avatar, email } = req.body;
+  bcrypt.hash(req.body.password, 10)
+    .then(hash=> User.create({ name, about, avatar, email , password: hash})
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -17,7 +20,7 @@ module.exports.createUser = (req, res) => {
       } else {
         res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
       }
-    });
+    }));
 };
 
 module.exports.getUserById = (req, res) => {
@@ -62,4 +65,13 @@ module.exports.editAvatar = (req, res) => {
         res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
       }
     });
+};
+
+module.exports.login = (req, res) => {
+  const { email, password} = req.body;
+  User.findUserByCredentials( email, password)
+    .then((user)=>{
+      const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
+      res.cookie('jwt', token, {httpOnly: true}).end()
+    })
 };
