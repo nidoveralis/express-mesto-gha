@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const {celebrate, Joi, errors} = require('celebrate');
 
 const router = require('./routes/users');
 const routerCard = require('./routes/cards');
@@ -16,13 +17,20 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
 app.use('/singin', login);
-app.use('/singup', createUser);
+app.use('/singup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().min(2).max(30),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  })
+}), createUser);
+app.use(errors());
 
-app.use(auth)
+app.use('/users', auth, router);
 
-app.use('/users', router);
-
-app.use('/cards', routerCard);
+app.use('/cards', auth, routerCard);
 
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Страница не найдена.' });
