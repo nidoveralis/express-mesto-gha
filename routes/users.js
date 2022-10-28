@@ -3,6 +3,7 @@ const {
   getUser, getUserById, editUser, editAvatar, createUser
 } = require('../controllers/users');
 
+router.post('/', createUser);
 router.get('/', getUser);
 router.get('/me', getUser);
 router.get('/:userId', getUserById);
