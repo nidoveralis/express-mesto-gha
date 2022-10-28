@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
 app.use('/singin', login);
-app.use('/singup', celebrate({
+app.post('/singup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
