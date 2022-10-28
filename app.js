@@ -26,7 +26,6 @@ app.use('/singup', celebrate({
     password: Joi.string().required().min(8),
   })
 }), createUser);
-app.use(errors());
 
 app.use('/users', auth, router);
 
@@ -35,5 +34,13 @@ app.use('/cards', auth, routerCard);
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Страница не найдена.' });
 });
+
+app.use(errors());
+app.use((err,req,res,next)=>{
+  //const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
+  console.log('llkk')
+  //res.status(statusCode).send({message:'kkjj'})
+  //next()
+})
 
 app.listen(PORT);
