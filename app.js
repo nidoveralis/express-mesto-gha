@@ -17,17 +17,16 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
 //app.use('/singin', login);
-app.post('/singup', 
-//celebrate({
-  //body: Joi.object().keys({
-    //name: Joi.string().min(2).max(30),
-    //about: Joi.string().min(2).max(30),
-    //avatar: Joi.string().min(2).max(30),
-    //email: Joi.string().required().email(),
-    //password: Joi.string().required().min(8),
-  //})
-//}),
- createUser);
+app.post('/signup', 
+  celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().min(2).max(30),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  })
+  }), createUser);
 
 app.use('/users', auth, router);
 
