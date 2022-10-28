@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       require: true,
+      select: false
     }
   },
   { versionKey: false },
@@ -47,10 +48,9 @@ userSchema.static.findUserByCredentials = function (email, password) {
           return user;
         });
     })
-    
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
+        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
       } else {
         res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
       }

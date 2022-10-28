@@ -22,12 +22,14 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
+  const owner = req.user._id;
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (card === null) {
         res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Некорректный id' });
       } else {
-        res.send({ data: card });
+        console.log(card)
+        //res.send({ data: card });
       }
     })
     .catch((err) => {
