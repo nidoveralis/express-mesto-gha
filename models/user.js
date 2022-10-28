@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
-const linkValid = /^https?[a-z0-9\-._~:/?#[]@!$&'()*+,;=]#?$/;
+const linkValid = /^https?:\/\/(www\.)?[a-zA-Z\d-]+\.[\w\d\-.~:/?#[\]@!$&'()*+,;=]{2,}#?$/;
 
 const userSchema = new mongoose.Schema(
   {
