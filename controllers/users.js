@@ -2,7 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('../constants');
-const { ErrorDefault, IncorrectData } = require('../errors')
+const { ErrorDefault, IncorrectData, IncorrectImailOrPassword, UsedEmail, NotFound, } = require('../errors')
 
 module.exports.getUser = (req, res, next) => {
   User.find({})
@@ -81,7 +81,7 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
     
-      next(new IncorrectData('Неправильный логин или пароль'))
+      next(new IncorrectImailOrPassword('Неправильный логин или пароль'))
       
     });
 };
