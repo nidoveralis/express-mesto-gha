@@ -2,13 +2,12 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('../constants');
-const { ErrorDefault, IncorrectData, UsedEmail, NotFound } = require('../errors')
+const { errorDefault, incorrectData } = require('../errors')
 
 module.exports.getUser = (req, res, next) => {
   User.find({})
     .then((user) => res.send({ data: user }))
-    //.catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
-    .catch(()=> {new ErrorDefault('Произошла ошибка')})
+    .catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -17,21 +16,19 @@ module.exports.createUser = (req, res, next) => {
     .then(hash=> User.create({ name, about, avatar, email , password: hash})
     .then((user) => res.send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email }))
     .catch((err) => {
+      console.log(err)
       if(err.code === 11000){
-        next(new UsedEmail('Пользователь с таким email уже зарегистрирован.'))
-        //res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
+        res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
       }
       if (err.name === 'ValidationError') {
-        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
-        next(new IncorrectData('Переданы некорректные данные.'))
+        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
       } else {
-        //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
-        next(new ErrorDefault('Произошла ошибка'))
+        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
       }
     }));
 };
 
-module.exports.getUserById = (req, res, next) => {
+module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (user === null) {
@@ -42,11 +39,9 @@ module.exports.getUserById = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Некорректный id' });
-        next(new IncorrectData('Переданы некорректные данные.'))
+        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Некорректный id' });
       } else {
-        //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
-        next(err)
+        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
       }
     });
 };

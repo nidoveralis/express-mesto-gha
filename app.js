@@ -39,8 +39,11 @@ app.use('*', (req, res) => {
 
 app.use(errors());
 app.use((err,req,res,next)=>{
+  const status = err.statusCode || 500;
+
+  res.status(status).send({ err });
+  next();
   //const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
-  console.log('llkk')
   //res.status(statusCode).send({message:'kkjj'})
   //next()
 })
