@@ -40,8 +40,6 @@ class IncorrectImailOrPassword extends Error {
   }
 };
 
-
-
 module.exports = {
   ErrorDefault,
   IncorrectData,

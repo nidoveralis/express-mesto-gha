@@ -46,7 +46,7 @@ app.use(errors());
 app.use((err,req,res,next)=>{
   const status = err.statusCode || 500;
 
-  res.status(status).send({ err });
+  res.status(status).send({ message: err.message });
   next();
   //const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
 
