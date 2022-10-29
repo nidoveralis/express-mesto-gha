@@ -32,6 +32,8 @@ class NotFound extends Error {
   }
 };
 
+
+
 module.exports = {
   ErrorDefault,
   IncorrectData,

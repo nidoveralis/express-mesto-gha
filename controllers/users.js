@@ -2,7 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('../constants');
-const { errorDefault, incorrectData } = require('../errors')
+const { ErrorDefault, IncorrectData } = require('../errors')
 
 module.exports.getUser = (req, res, next) => {
   User.find({})
@@ -72,11 +72,16 @@ module.exports.editAvatar = (req, res) => {
     });
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials( {email, password})
     .then((user)=>{
       const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
       res.cookie('jwt', token, {httpOnly: true}).end()
     })
+    .catch((err) => {
+      console.log(err)
+      next(new IncorrectData('Неправильный логин или пароль'))
+      
+    });
 };

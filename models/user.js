@@ -4,6 +4,7 @@ const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_INCORRECT_MAIL
 const linkValid = require('../constants')
 const { isEmail, isURL } = require('validator');
 const bcrypt = require('bcryptjs');
+const { IncorrectData } = require('../errors');
 
 const userSchema = new mongoose.Schema(
   {
@@ -52,12 +53,14 @@ userSchema.statics.findUserByCredentials = function ({email, password}) {
   return this.findOne({email}).select('+password')
     .then((user)=> {
       if(user === null){
+        throw new IncorrectData('Неправильные почта или пароль.')
+        
         //res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Неправильные почта или пароль.' });
       };
       return bcrypt.compare(password, user.password)
           .then((matched)=>{
             if(!matched) {
-              
+              console.log('net parol')
               //res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Неправильные пароль.' });
             }
             return user;
