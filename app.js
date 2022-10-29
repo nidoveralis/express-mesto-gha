@@ -1,9 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {celebrate, Joi, errors} = require('celebrate');
 const { validationSignup, validationSignin } = require('./validation/validation');
-const { linkValid } = require('./constants');
 const cookieParser = require('cookie-parser');
 
 const router = require('./routes/users');
@@ -31,7 +29,7 @@ app.use('*', (req, res) => {
   res.status(404).send({ message: 'Страница не найдена.' });
 });
 
-app.use(errors());
+//app.use(errors());
 app.use((err,req,res,next)=>{
   const status = err.statusCode || 500;
 
@@ -46,3 +44,4 @@ app.listen(PORT);
 //данные пользователя
 //Удаление карточки
 // Удаление лайка у карточки с некорректным id
+//ошибки

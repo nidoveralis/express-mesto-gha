@@ -27,9 +27,23 @@ const validationEditAvatar = celebrate({
     avatar: Joi.string().min(2).max(30).pattern(linkValid)})
 });
 
+const validationCreateCard = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string().required().min(2).max(30).pattern(linkValid)})
+});
+
+const validationLikeCard = celebrate({
+  body: Joi.object().keys({
+    _id: Joi.string().required(),///////
+    })
+});
+
 module.exports = {
   validationSignup,
   validationSignin,
   validationEditUser,
-  validationEditAvatar
+  validationEditAvatar,
+  validationCreateCard,
+  validationLikeCard
 }
