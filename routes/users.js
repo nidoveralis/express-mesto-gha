@@ -8,7 +8,7 @@ const { validationEditUser, validationEditAvatar } = require('../validation/vali
 //router.use(cookieParser());
 
 router.get('/', getUser);
-router.get('/me', getUser);
+router.get('/me', getUserById);
 router.get('/:userId', getUserById);
 router.patch('/me', validationEditUser,editUser);
 router.patch('/me/avatar', validationEditAvatar, editAvatar);
