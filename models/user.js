@@ -60,7 +60,6 @@ userSchema.statics.findUserByCredentials = function ({email, password}) {
       return bcrypt.compare(password, user.password)
           .then((matched)=>{
             if(!matched) {
-              console.log('net parol')
               //res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Неправильные пароль.' });
             }
             return user;
