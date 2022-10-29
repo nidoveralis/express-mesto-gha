@@ -78,7 +78,7 @@ module.exports.login = (req, res, next) => {
     .then((user)=>{
       const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
       res.cookie('jwt', token, {httpOnly: true}).end()
-      res.status(200).send('Авторизация прошла успешно')
+      res.status(201).send({messge :'Авторизация прошла успешно'})
     })
     .catch((err) => {
     

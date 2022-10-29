@@ -23,6 +23,7 @@ app.post('/signin', celebrate({
     password: Joi.string().required()
   })
 }), login);
+
 app.post('/signup', 
   celebrate({
   body: Joi.object().keys({

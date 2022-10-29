@@ -3,6 +3,7 @@ const { ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
 
 
 module.exports = (req,res, next) => {
+  console.log(req.header)
   const {authorization} = req.header;
   if(!authorization || !authorization.startWith('Bearer')) {
     res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Необходима авторизация.' });
