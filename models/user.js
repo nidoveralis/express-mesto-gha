@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
 const linkValid = require('../constants')
+const { isEmail, isURL } = require('validator');
 console.log(linkValid)
 
 const userSchema = new mongoose.Schema(
@@ -25,14 +26,18 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
       validate: {
-        validator: (v)=> linkValid.test(v),
+        validator: (v)=> isURL(v, { required_protocol: true }),
         message: 'Некорректная ссылка' 
     }
     },
     email: {
       type: String,
       require: true,
-      unique: true
+      unique: true,
+      validate:{ 
+        validator: (v)=> isEmail(v),
+        message: 'Некорректный email'      
+      }
     },
     password: {
       type: String,
