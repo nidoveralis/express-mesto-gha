@@ -6,7 +6,7 @@ const { ErrorDefault, IncorrectData, IncorrectImailOrPassword, UsedEmail, NotFou
 
 module.exports.getUser = (req, res, next) => {
   User.find({})
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
 };
 
@@ -78,6 +78,7 @@ module.exports.login = (req, res, next) => {
     .then((user)=>{
       const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
       res.cookie('jwt', token, {httpOnly: true}).end()
+      res.status(200).send('Авторизация прошла успешно')
     })
     .catch((err) => {
     

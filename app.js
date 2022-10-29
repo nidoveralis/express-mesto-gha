@@ -53,5 +53,3 @@ app.use((err,req,res,next)=>{
 })
 
 app.listen(PORT);
-//Добавление пользователя с существующим email в БД 409
-//Авторизация с несуществующими email и password в БД
