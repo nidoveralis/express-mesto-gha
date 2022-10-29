@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {celebrate, Joi, errors} = require('celebrate');
-const { linkValid } = require('constants')
+const { linkValid } = require('./constants')
 
 const router = require('./routes/users');
 const routerCard = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
-const auth = require('./middlewares/auth')
-
+const auth = require('./middlewares/auth');
+console.log(linkValid)
 const { PORT = 3000 } = process.env;
 
 const app = express();
