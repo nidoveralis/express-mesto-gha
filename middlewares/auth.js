@@ -3,15 +3,10 @@ const { ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
 
 module.exports = (req,res, next) => {
   const authorization = req.cookies.jwt;
-  console.log(authorization)
-  //if(!authorization.cookies.jwt || !authorization.cookies.jwt.startsWith('Bearer')) {
-    if(!authorization) {
-    console.log('jjjj')
+  if(!authorization) {
     res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Необходима авторизация.' });
-  }else{
-    console.log('iiiii')
   }
-  const token = authorization//.replace('Bearer ', '');
+  const token = authorization;
   let payload;
 
   try {
