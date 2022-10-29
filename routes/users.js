@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { getUser, getUserById, editUser, editAvatar } = require('../controllers/users');
 const cookieParser = require('cookie-parser');
 const {celebrate, Joi, errors} = require('celebrate');
-const { linkValid } = require('./constants');
+const { linkValid } = require('../constants');
 
 //router.use(cookieParser());
 
