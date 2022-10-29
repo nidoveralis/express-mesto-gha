@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND } = require('../constants');
+const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('../constants');
 
 module.exports.getUser = (req, res) => {
   User.find({})
@@ -17,7 +17,7 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       console.log(err)
       if(err.code === 11000){
-        res.status(409).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
+        res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
       }
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });

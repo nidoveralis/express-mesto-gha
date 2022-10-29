@@ -3,7 +3,6 @@ const validator = require('validator');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
 const linkValid = require('../constants')
 const { isEmail, isURL } = require('validator');
-console.log(linkValid)
 
 const userSchema = new mongoose.Schema(
   {
