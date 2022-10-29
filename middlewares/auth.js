@@ -1,17 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
-//app.get('/posts', (req, res) => {
-  //console.log(req.cookies.jwt); // достаём токен
-//}); 
 
 module.exports = (req,res, next) => {
-  console.log(req.header)
+  console.log(req)
   const {authorization} = req.header;
   //const {authorization} = req.cookies.jwt;
-  if(!authorization || !authorization.startWith('Bearer')) {
+  if(!authorization || !authorization.startsWith('Bearer')) {
     res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Необходима авторизация.' });
   }
-  const token = authorization.replace('Bearer', '');
+  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
