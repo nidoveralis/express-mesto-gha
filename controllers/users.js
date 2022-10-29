@@ -7,8 +7,8 @@ const { errorDefault } = require('../errors')
 module.exports.getUser = (req, res) => {
   User.find({})
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
-    //.catch(()=> {new errorDefault('Произошла ошибка')})
+    //.catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
+    .catch(()=> {new errorDefault('Произошла ошибка')})
 };
 
 module.exports.createUser = (req, res) => {
