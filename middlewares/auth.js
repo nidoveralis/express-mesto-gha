@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
 
 module.exports = (req,res, next) => {
-  const {authorization} = req.header.authorization;
-  //const {authorization} = req.cookies.jwt;
+  const {authorization} = req.header;
   if(!authorization || !authorization.startsWith('Bearer')) {
     res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Необходима авторизация.' });
   }

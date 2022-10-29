@@ -78,8 +78,12 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials( {email, password})
     .then((user)=>{
       const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
-      res.status(200).send({token})
+      //res.status(200).send({name: user.name, about: user.about, avatar: user.avatar, email: user.email, token,})
       //res.cookie('jwt', token, {httpOnly: true}).end()
+      res.cookie('jwt', token, { maxAge: 3600000, httpOnly: true })
+      .send({
+        name: user.name, about: user.about, avatar: user.avatar, email: user.email, token,
+      });
     })
     .catch((err) => {
     
