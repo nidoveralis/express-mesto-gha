@@ -1,6 +1,6 @@
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('./constants');
 
-class errorDefault extends Error {
+class ErrorDefault extends Error {
   constructor(message) {
     super(message);
     this.statusCode = ERROR_CODE_DEFAYLT;
@@ -8,7 +8,7 @@ class errorDefault extends Error {
   }
 };
 
-class incorrectData extends Error {
+class IncorrectData extends Error {
   constructor(message) {
     super(message);
     this.statusCode = ERROR_CODE_INCORRECT_DATA;
@@ -16,7 +16,25 @@ class incorrectData extends Error {
   }
 };
 
+class UsedEmail extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = ERROR_CODE_EMAIL_USED;
+    //this.message = message;
+  }
+};
+
+class NotFound extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = ERROR_CODE_NOT_FOUND;
+    //this.message = message;
+  }
+};
+
 module.exports = {
-  errorDefault,
-  incorrectData
+  ErrorDefault,
+  IncorrectData,
+  UsedEmail,
+  NotFound
 }
