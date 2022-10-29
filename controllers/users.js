@@ -2,16 +2,16 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_NOT_FOUND, ERROR_CODE_EMAIL_USED } = require('../constants');
-const { errorDefault } = require('../errors')
+const { errorDefault, incorrectData } = require('../errors')
 
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   User.find({})
     .then((user) => res.send({ data: user }))
     //.catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
     .catch(()=> {new errorDefault('Произошла ошибка')})
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email } = req.body;
   bcrypt.hash(req.body.password, 10)
     .then(hash=> User.create({ name, about, avatar, email , password: hash})
@@ -22,7 +22,8 @@ module.exports.createUser = (req, res) => {
         res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
       }
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
+        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
+        next(new incorrectData('Переданы некорректные данные.'))
       } else {
         res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
       }
