@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {celebrate, Joi, errors} = require('celebrate');
+const { linkValid } = require('constants')
 
 const router = require('./routes/users');
 const routerCard = require('./routes/cards');
@@ -22,7 +23,7 @@ app.post('/signup',
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2).max(30).pattern(/^https?:\/\/(www\.)?[a-zA-Z\d-]+\.[\w\d\-.~:/?#[\]@!$&'()*+,;=]{2,}#?$/),
+    avatar: Joi.string().min(2).max(30).pattern(linkValid),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   })
@@ -45,3 +46,5 @@ app.use((err,req,res,next)=>{
 })
 
 app.listen(PORT);
+//Добавление пользователя с существующим email в БД 409
+//Авторизация с несуществующими email и password в БД
