@@ -12,7 +12,7 @@ class IncorrectData extends Error {
   constructor(message) {
     super(message);
     this.statusCode = ERROR_CODE_INCORRECT_DATA;
-    //this.message = message;
+    this.errorMessage = message;
   }
 };
 

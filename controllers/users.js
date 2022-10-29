@@ -80,7 +80,7 @@ module.exports.login = (req, res, next) => {
       res.cookie('jwt', token, {httpOnly: true}).end()
     })
     .catch((err) => {
-      console.log(err)
+    
       next(new IncorrectData('Неправильный логин или пароль'))
       
     });
