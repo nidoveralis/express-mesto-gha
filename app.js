@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {celebrate, Joi, errors} = require('celebrate');
 const { linkValid } = require('./constants');
+const cookieParser = require('cookie-parser');
 
 const router = require('./routes/users');
 const routerCard = require('./routes/cards');
@@ -35,8 +36,8 @@ app.post('/signup',
   })
   }), createUser);
 
+app.use(cookieParser());
 app.use('/users', auth, router);
-
 app.use('/cards', auth, routerCard);
 
 app.use('*', (req, res) => {

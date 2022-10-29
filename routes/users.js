@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { getUser, getUserById, editUser, editAvatar } = require('../controllers/users');
 const cookieParser = require('cookie-parser');
 
-//app.use(cookieParser());
+router.use(cookieParser());
 //app.get('/posts', (req, res) => {
   //console.log(req.cookies.jwt); // достаём токен
 //}); 
