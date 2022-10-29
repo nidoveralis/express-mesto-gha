@@ -8,13 +8,13 @@ class errorDefault extends Error {
   }
 };
 
-class errorDefault extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = ERROR_CODE_DEFAYLT;
-    this.message = message;
-  }
-};
+//class errorDefault extends Error {
+  //constructor(message) {
+   // super(message);
+   // this.statusCode = ERROR_CODE_DEFAYLT;
+   // this.message = message;
+ // }
+//};
 
 module.exports = {
   errorDefault,
