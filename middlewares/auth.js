@@ -19,6 +19,6 @@ module.exports = (req,res, next) => {
   }catch(err) {
     res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Необходима авторизация.' });
   }
-    //req.user = payload;
-    //next(); 
+    req.user = payload;
+    next(); 
 };
