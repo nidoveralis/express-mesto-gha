@@ -74,8 +74,8 @@ module.exports.editAvatar = (req, res) => {
 };
 
 module.exports.login = (req, res) => {
-  const { email } = req.body;
-  User.findUserByCredentials( {email} ).select('+password')
+  const { email, password } = req.body;
+  return User.findUserByCredentials( {email, password})
     .then((user)=>{
       const token = jwt.sign({_id: user._id}, 'some-secret-key', {expiresIn: '7d'});
       res.cookie('jwt', token, {httpOnly: true}).end()
