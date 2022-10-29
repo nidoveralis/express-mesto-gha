@@ -3,19 +3,14 @@ const { getUser, getUserById, editUser, editAvatar } = require('../controllers/u
 const cookieParser = require('cookie-parser');
 const {celebrate, Joi, errors} = require('celebrate');
 const { linkValid } = require('../constants');
+const { validationEditUser, validationEditAvatar } = require('../validation/validation')
 
 //router.use(cookieParser());
 
 router.get('/', getUser);
 router.get('/me', getUser);
 router.get('/:userId', getUserById);
-router.patch('/me', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2).max(30).pattern(linkValid),
-  })
-}) ,editUser);
-router.patch('/me/avatar', editAvatar);
+router.patch('/me', validationEditUser,editUser);
+router.patch('/me/avatar', validationEditAvatar, editAvatar);
 
 module.exports = router;

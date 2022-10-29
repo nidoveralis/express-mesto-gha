@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {celebrate, Joi, errors} = require('celebrate');
+const { validationSignup, validationSignin } = require('./validation/validation');
 const { linkValid } = require('./constants');
 const cookieParser = require('cookie-parser');
 
@@ -18,23 +19,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required()
-  })
-}), login);
+app.post('/signin', validationSignin, login);
 
-app.post('/signup', 
-  celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2).max(30).pattern(linkValid),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  })
-  }), createUser);
+app.post('/signup', validationSignup, createUser);
 
 app.use(cookieParser());
 app.use('/users', auth, router);
@@ -55,3 +42,7 @@ app.use((err,req,res,next)=>{
 })
 
 app.listen(PORT);
+
+//данные пользователя
+//Удаление карточки
+// Удаление лайка у карточки с некорректным id
