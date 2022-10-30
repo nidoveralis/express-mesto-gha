@@ -5,7 +5,7 @@ const { validationEditUser, validationEditAvatar } = require('../validation/vali
 const { celebrate, Joi } = require('celebrate');
 const { linkValid } = require('../constants');
 
-//router.use(cookieParser());
+router.use(cookieParser());
 
 router.get('/', getUser);
 router.get('/me', getUserById);
