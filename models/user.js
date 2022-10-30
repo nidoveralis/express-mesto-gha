@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const { ERROR_CODE_INCORRECT_DATA, ERROR_CODE_DEFAYLT, ERROR_CODE_INCORRECT_MAIL_PASSWORD } = require('../constants');
-const linkValid = require('../constants')
 const { isEmail, isURL } = require('validator');
 const bcrypt = require('bcryptjs');
-const { IncorrectData } = require('../errors');
+const { IncorrectData, IncorrectImailOrPassword } = require('../errors');
 
 const userSchema = new mongoose.Schema(
   {
@@ -53,23 +50,21 @@ userSchema.statics.findUserByCredentials = function ({email, password}) {
   return this.findOne({email}).select('+password')
     .then((user)=> {
       if(user === null){
-        throw new IncorrectData('Неправильные почта или пароль.')
-        
-        //res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Неправильные почта или пароль.' });
-      };
+        throw new IncorrectData('Неправильные почта или пароль.');
+        };
       return bcrypt.compare(password, user.password)
           .then((matched)=>{
             if(!matched) {
-              //res.status(ERROR_CODE_INCORRECT_MAIL_PASSWORD).send({ message: 'Неправильные пароль.' });
+              throw new IncorrectImailOrPassword('Неправильные пароль.');
             }
             return user;
           });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
+        throw new IncorrectData('Переданы некорректные данные.');
       } else {
-        //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+        next();
       }
     });
 };

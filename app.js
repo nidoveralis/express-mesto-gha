@@ -16,7 +16,6 @@ const app = express();
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-const { linkValid } = require('./constants');
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
 app.post('/signin', validationSignin, login);
@@ -42,4 +41,3 @@ app.use((err,req,res,next)=>{
 })
 
 app.listen(PORT);
-//ошибки
