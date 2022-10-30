@@ -17,14 +17,16 @@ module.exports.createUser = (req, res, next) => {
     .then(hash=> User.create({ name, about, avatar, email , password: hash})
     .then((user) => res.send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email }))
     .catch((err) => {
-      console.log(err)
       if(err.code === 11000){
-        res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
+        //res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
+        throw new UsedEmail('Пользователь с таким email уже зарегистрирован.')
       }
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
+        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
+        throw new IncorrectData('Переданы некорректные данные.')
       } else {
-        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
+        //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
+        next()
       }
     }));
 };
