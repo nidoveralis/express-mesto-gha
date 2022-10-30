@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { errors} = require('celebrate');
 const mongoose = require('mongoose');
 const { validationSignup, validationSignin } = require('./validation/validation');
 const cookieParser = require('cookie-parser');
@@ -29,7 +30,7 @@ app.use('*', (req, res) => {
   res.status(404).send({ message: 'Страница не найдена.' });
 });
 
-//app.use(errors());
+app.use(errors());
 app.use((err,req,res,next)=>{
   const status = err.statusCode || 500;
 

@@ -1,4 +1,4 @@
-const {celebrate, Joi, errors} = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 const { linkValid } = require('../constants');
 
 const validationSignup = celebrate({
