@@ -7,7 +7,7 @@ const { linkValid } = require('../constants');
 router.get('/', getUser);
 router.get('/me', getUserMe);
 router.get('/:userId', getUserById);
-router.patch('/me', editUser);
-router.patch('/me/avatar', editAvatar);
+router.patch('/me', validationEditUser, editUser);
+router.patch('/me/avatar', validationEditAvatar, editAvatar);
 
 module.exports = router;

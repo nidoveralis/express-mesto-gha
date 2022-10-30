@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {  celebrate, Joi, errors} = require('celebrate');
+const { errors} = require('celebrate');
 const mongoose = require('mongoose');
 const { validationSignup, validationSignin } = require('./validation/validation');
 const cookieParser = require('cookie-parser');
@@ -21,14 +21,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
 app.post('/signin', validationSignin, login);
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().min(2).max(30).pattern(linkValid),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),}),
-  }), createUser);
+app.post('/signup', validationSignup, createUser);
 
 app.use(cookieParser());
 app.use('/users', auth, router);
