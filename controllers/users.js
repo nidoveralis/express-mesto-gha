@@ -7,7 +7,6 @@ const { ErrorDefault, IncorrectData, IncorrectImailOrPassword, UsedEmail, NotFou
 module.exports.getUser = (req, res, next) => {
   User.find({})
     .then((user) => res.status(200).send( user ))
-    //.catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
     .catch(next)
 };
 
@@ -18,77 +17,74 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => res.send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email }))
     .catch((err) => {
       if(err.code === 11000){
-        //res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
         next(new UsedEmail('Пользователь с таким email уже зарегистрирован.'))
       }
       if (err.name === 'ValidationError') {
-        //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
         next(new IncorrectData('Переданы некорректные данные.'))
       } else {
-        //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
         next()
       }
     }));
 };
 
-module.exports.getUserMe = (req, res) => {
+module.exports.getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user === null) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден.' });
+        next(new NotFound('Пользователь не найден.'))
       } else {
         res.send({ data: user });
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Некорректный id' });
+        next(new IncorrectData('Некорректный id'))
       } else {
-        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+        next()
       }
     });
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (user === null) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден.' });
+        next(new NotFound('Пользователь не найден.'))
       } else {
         res.send({ data: user });
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Некорректный id' });
+        next(new IncorrectData('Некорректный id'))
       } else {
-        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+        next()
       }
     });
 };
 
-module.exports.editUser = (req, res) => {
+module.exports.editUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { runValidators: true, new: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
+        next(new IncorrectData('Переданы некорректные данные при обновлении профиля.'))
       } else {
-        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+        next()
       }
     });
 };
 
-module.exports.editAvatar = (req, res) => {
+module.exports.editAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
+        next(new IncorrectData('Переданы некорректные данные при обновлении аватара.'))
       } else {
-        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+        next()
       }
     });
 };
@@ -104,8 +100,6 @@ module.exports.login = (req, res, next) => {
       });
     })
     .catch((err) => {
-    
       next(new IncorrectImailOrPassword('Неправильный логин или пароль'))
-      
     });
 };
