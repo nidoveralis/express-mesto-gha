@@ -4,25 +4,14 @@ const { validationCreateCard, validationLikeCard } = require('../validation/vali
 const { celebrate, Joi } = require('celebrate');
 const { linkValid } = require('../constants');
 router.get('/', getCards);
-router.post('/', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().min(2).max(30).pattern(linkValid)})
-}), createCard);
-router.delete('/:cardId', celebrate({
-  headers: Joi.object().keys({
-    cardId: Joi.string().required().hex(),
-    })
-}), deleteCard);
-router.put('/:cardId/likes', celebrate({
-  headers: Joi.object().keys({
-    cardId: Joi.string().required().hex(),
-    })
-}), likeCard);
-router.delete('/:cardId/likes', celebrate({
-  headers: Joi.object().keys({
-    cardId: Joi.string().required().hex(),
-    })
-}), dislikeCard);
+router.post('/', createCard);
+router.delete('/:cardId', deleteCard);
+router.put('/:cardId/likes', likeCard);
+router.delete('/:cardId/likes', //celebrate({
+  //headers: Joi.object().keys({
+    //cardId: Joi.string().required().hex(),
+  //  })
+//}), 
+dislikeCard);
 
 module.exports = router;

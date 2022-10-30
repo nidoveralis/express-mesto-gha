@@ -22,15 +22,16 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  console.log(req.user._id)
-  const owner = req.user._id;
+  
+
   Card.findByIdAndRemove(req.params.cardId)//////req.params.cardId
     .then((card) => {
       if (card === null) {
-        res.status(403).send({ message: 'Некорректный id' });
-      } else {
-        console.log(card)
-        //res.send({ data: card });
+        res.status(403).send({ message: 'Нет карты' });
+      }if (JSON.stringify(req.user._id) !== JSON.stringify(card.owner)) {
+        res.status(403).send({ message: 'НЕ твоя карта' });
+      }else {
+       res.send({ data: card });
       }
     })
     .catch((err) => {
