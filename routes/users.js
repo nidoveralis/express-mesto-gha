@@ -6,7 +6,7 @@ const { linkValid } = require('../constants');
 
 router.get('/', getUser);
 router.get('/me', getUserMe);
-router.get('/:userId', validationId, getUserById);
+router.get('/:userId', getUserById);
 router.patch('/me', validationEditUser, editUser);
 router.patch('/me/avatar', validationEditAvatar, editAvatar);
 
