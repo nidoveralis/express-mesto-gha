@@ -28,8 +28,26 @@ module.exports.createUser = (req, res, next) => {
     }));
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserMe = (req, res) => {
   User.findById(req.user._id)
+    .then((user) => {
+      if (user === null) {
+        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден.' });
+      } else {
+        res.send({ data: user });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Некорректный id' });
+      } else {
+        res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' });
+      }
+    });
+};
+
+module.exports.getUserById = (req, res) => {
+  User.findById(req.params.userId)
     .then((user) => {
       if (user === null) {
         res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь не найден.' });
