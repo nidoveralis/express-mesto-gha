@@ -7,7 +7,8 @@ const { ErrorDefault, IncorrectData, IncorrectImailOrPassword, UsedEmail, NotFou
 module.exports.getUser = (req, res, next) => {
   User.find({})
     .then((user) => res.status(200).send( user ))
-    .catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
+    //.catch(() => res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка' }));
+    .catch(next)
 };
 
 module.exports.createUser = (req, res, next) => {
