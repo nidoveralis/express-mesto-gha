@@ -34,8 +34,13 @@ const validationCreateCard = celebrate({
 });
 
 const validationId = celebrate({
-  headers: Joi.object().keys({
+  params: Joi.object().keys({
   cardId: Joi.string().required().length(24).hex(),})
+});
+
+const validationUserId = celebrate({
+  params: Joi.object().keys({
+  userId: Joi.string().required().length(24).hex(),})
 });
 
 module.exports = {
@@ -44,5 +49,6 @@ module.exports = {
   validationEditUser,
   validationEditAvatar,
   validationCreateCard,
-  validationId
+  validationId,
+  validationUserId
 }
