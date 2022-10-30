@@ -24,7 +24,7 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   console.log(req.user._id)
   const owner = req.user._id;
-  Card.findByIdAndRemove(owner)//////
+  Card.findByIdAndRemove(req.params.cardId)//////req.params.cardId
     .then((card) => {
       if (card === null) {
         res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Некорректный id' });

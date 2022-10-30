@@ -4,7 +4,7 @@ const { validationCreateCard, validationLikeCard } = require('../validation/vali
 router.get('/', getCards);
 router.post('/', validationCreateCard, createCard);
 router.delete('/:cardId', deleteCard);
-router.put('/:cardId/likes', validationLikeCard, likeCard);
+router.put('/:cardId/likes', likeCard);
 router.delete('/:cardId/likes', dislikeCard);
 
 module.exports = router;
