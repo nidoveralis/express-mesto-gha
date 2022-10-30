@@ -23,11 +23,10 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   
-
-  Card.findByIdAndRemove(req.params.cardId)//////req.params.cardId
+  Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (card === null) {
-        res.status(403).send({ message: 'Нет карты' });
+        res.status(404).send({ message: 'Нет карты' });
       }if (JSON.stringify(req.user._id) !== JSON.stringify(card.owner)) {
         res.status(403).send({ message: 'НЕ твоя карта' });
       }else {
