@@ -19,11 +19,11 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if(err.code === 11000){
         //res.status(ERROR_CODE_EMAIL_USED).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
-        throw new UsedEmail('Пользователь с таким email уже зарегистрирован.')
+        next(new UsedEmail('Пользователь с таким email уже зарегистрирован.'))
       }
       if (err.name === 'ValidationError') {
         //res.status(ERROR_CODE_INCORRECT_DATA).send({ message: 'Переданы некорректные данные.' });
-        throw new IncorrectData('Переданы некорректные данные.')
+        next(new IncorrectData('Переданы некорректные данные.'))
       } else {
         //res.status(ERROR_CODE_DEFAYLT).send({ message: 'Произошла ошибка.' });
         next()
