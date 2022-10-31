@@ -13,3 +13,5 @@ router.post('/signup', validationSignup, createUser);
 router.use(cookieParser());
 router.use('/users', auth, users);
 router.use('/cards', auth, cards);
+
+module.exports = router;
