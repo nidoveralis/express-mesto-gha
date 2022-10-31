@@ -6,6 +6,7 @@ const users = require('./users');
 const cards = require('./cards');
 const { validationSignup, validationSignin } = require('../validation/validation');
 const { createUser, login } = require('../controllers/users');
+const NotFound = require('../errors/NotFound');
 
 router.post('/signin', validationSignin, login);
 router.post('/signup', validationSignup, createUser);
@@ -13,5 +14,9 @@ router.post('/signup', validationSignup, createUser);
 router.use(cookieParser());
 router.use('/users', auth, users);
 router.use('/cards', auth, cards);
+
+router.use('*', auth, (req, res, next) => {
+  next(new NotFound('Страница не найдена'));
+});
 
 module.exports = router;
