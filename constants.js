@@ -1,4 +1,4 @@
-//const cryptoKey = fe3c25b362fd7207369c980e8a8ffc3f500cbde993eee96d06f74dce53c25a63
+// const cryptoKey = fe3c25b362fd7207369c980e8a8ffc3f500cbde993eee96d06f74dce53c25a63
 
 const ERROR_CODE_INCORRECT_DATA = 400;
 const ERROR_CODE_INCORRECT_MAIL_PASSWORD = 401;
@@ -16,5 +16,5 @@ module.exports = {
   ERROR_CODE_EMAIL_USED,
   ERROR_CODE_INCORRECT_MAIL_PASSWORD,
   ERROR_CODE_FORBIDDEN,
-  linkValid
+  linkValid,
 };

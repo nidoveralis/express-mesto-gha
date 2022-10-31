@@ -1,14 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { errors} = require('celebrate');
+const { errors } = require('celebrate');
 const mongoose = require('mongoose');
-const { validationSignup, validationSignin } = require('./validation/validation');
-const cookieParser = require('cookie-parser');
 
-const router = require('./routes/users');
-const routerCard = require('./routes/cards');
-const { createUser, login } = require('./controllers/users');
+const { NotFound } = require('./errors/NotFound');
 const auth = require('./middlewares/auth');
+const router = require('./routes/router');
+const errorsHandler = require('./middlewares/errorsHandler');
 
 const { PORT = 3000 } = process.env;
 
@@ -18,26 +16,15 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
-app.post('/signin', validationSignin, login);
+app.use(router);
+// app.use('/users', auth, router);
+// app.use('/cards', auth, routerCard);
 
-app.post('/signup', validationSignup, createUser);
-
-app.use(cookieParser());
-app.use('/users', auth, router);
-app.use('/cards', auth, routerCard);
-
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена.' });
+app.use('*', auth, (req, res, next) => {
+  next(NotFound);
 });
 
 app.use(errors());
-app.use((err,req,res,next)=>{
-  const status = err.statusCode || 500;
-
-  res.status(status).send({ message: err.message });
-  next();
-  //const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
-
-})
+app.use(errorsHandler);
 
 app.listen(PORT);

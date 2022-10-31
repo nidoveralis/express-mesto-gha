@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const { getUser, getUserMe, getUserById, editUser, editAvatar } = require('../controllers/users');
-const { validationEditUser, validationEditAvatar, validationUserId } = require('../validation/validation')
+const {
+  getUser, getUserMe, getUserById, editUser, editAvatar,
+} = require('../controllers/users');
+const { validationEditUser, validationEditAvatar, validationUserId } = require('../validation/validation');
 
 router.get('/', getUser);
 router.get('/me', getUserMe);
