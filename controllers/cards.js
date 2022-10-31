@@ -24,11 +24,11 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (card === null) {
         next(new NotFound('Карточка не найдена'));
-      } if (JSON.stringify(req.user._id) !== JSON.stringify(card.owner)) {
+      }else if (JSON.stringify(req.user._id) !== JSON.stringify(card.owner)) {
         next(new ForbiddenError('Нельзя удалить чужую карточку'));
       } else {
         res.send({ data: card });
