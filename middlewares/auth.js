@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { IncorrectImailOrPassword } = require('../errors/IncorrectImailOrPassword');
+const IncorrectImailOrPassword = require('../errors/IncorrectImailOrPassword');
 
 module.exports = (req, res, next) => {
   const authorization = req.cookies.jwt;
