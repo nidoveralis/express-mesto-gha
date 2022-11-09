@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const router = require('./routes/router');
 const errorsHandler = require('./middlewares/errorsHandler');
+const { errorLogger, requestLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 
@@ -14,8 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
 
+app.use(requestLogger);
 app.use(router);
 
+app.use(errorLogger);
 app.use(errors());
 app.use(errorsHandler);
 
